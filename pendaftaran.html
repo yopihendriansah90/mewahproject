@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Event - Mewah Project</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFE66D;
+            --dark-color: #2C3E50;
+            --light-color: #F8F9FA;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand img {
+            height: 30px;
+        }
+
+        /* Registration Container */
+        .registration-container {
+            background: var(--gradient-3);
+            min-height: 100vh;
+            padding: 100px 0 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .registration-form {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .event-info {
+            background: var(--light-color);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .event-info h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .form-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+        }
+
+        .btn-submit {
+            background: var(--gradient-2);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        .btn-back {
+            background: var(--dark-color);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .btn-back:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp i {
+            margin-right: 8px;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        /* Form Steps */
+        .form-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .form-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-circle {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .step.completed .step-circle {
+            background: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .step.active .step-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Form Sections */
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .registration-form {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            .form-title {
+                font-size: 2rem;
+            }
+            
+            .step-label {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://mewahproject.com/wp-content/uploads/2025/02/Logo-Mewah-Project-Black.png" alt="Mewah Project">
+            </a>
+            <div class="ms-auto">
+                <a href="index.html" class="btn btn-back">
+                    <i class="bi bi-arrow-left"></i> Kembali
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Registration Section -->
+    <div class="registration-container">
+        <div class="container">
+            <div class="registration-form" id="registrationFormContainer">
+                <h2 class="form-title">Form Pendaftaran Event</h2>
+                
+                <div class="event-info" id="eventInfo">
+                    <h4><i class="bi bi-calendar-event"></i> <span id="selectedEvent">Memuat...</span></h4>
+                    <p class="mb-0">Silakan lengkapi data di bawah ini untuk mendaftar event</p>
+                </div>
+
+                <!-- Form Steps -->
+                <div class="form-steps">
+                    <div class="step active" id="step1">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Data Pribadi</div>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Informasi Tambahan</div>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Konfirmasi</div>
+                    </div>
+                </div>
+                
+                <form id="registrationForm">
+                    <!-- Section 1: Personal Data -->
+                    <div class="form-section active" id="section1">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fullName" class="form-label">Nama Lengkap *</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">No. Telepon *</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="company" class="form-label">Perusahaan/Institusi</label>
+                                <input type="text" class="form-control" id="company">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Alamat</label>
+                            <textarea class="form-control" id="address" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <div></div>
+                            <button type="button" class="btn btn-primary" onclick="nextStep()">
+                                Lanjut <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Section 2: Additional Information -->
+                    <div class="form-section" id="section2">
+                        <div class="mb-3">
+                            <label for="experience" class="form-label">Pengalaman (Opsional)</label>
+                            <select class="form-select" id="experience">
+                                <option value="">-- Pilih Pengalaman --</option>
+                                <option value="pemula">Pemula</option>
+                                <option value="menengah">Menengah</option>
+                                <option value="ahli">Ahli</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="hearAbout" class="form-label">Bagaimana Anda mengetahui event ini?</label>
+                            <select class="form-select" id="hearAbout">
+                                <option value="">-- Pilih --</option>
+                                <option value="media-sosial">Media Sosial</option>
+                                <option value="teman">Teman/Keluarga</option>
+                                <option value="website">Website</option>
+                                <option value="email">Email</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Pesan Tambahan</label>
+                            <textarea class="form-control" id="message" rows="3" placeholder="Ceritakan mengapa Anda tertarik mengikuti event ini..."></textarea>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="newsletter">
+                            <label class="form-check-label" for="newsletter">
+                                Saya ingin menerima newsletter dan informasi event terbaru
+                            </label>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-secondary" onclick="prevStep()">
+                                <i class="bi bi-arrow-left"></i> Kembali
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep()">
+                                Lanjut <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Section 3: Confirmation -->
+                    <div class="form-section" id="section3">
+                        <h4 class="mb-4">Konfirmasi Data Pendaftaran</h4>
+                        
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Data Pribadi</h5>
+                                <p class="mb-1"><strong>Nama:</strong> <span id="confirmName"></span></p>
+                                <p class="mb-1"><strong>Email:</strong> <span id="confirmEmail"></span></p>
+                                <p class="mb-1"><strong>Telepon:</strong> <span id="confirmPhone"></span></p>
+                                <p class="mb-0"><strong>Perusahaan:</strong> <span id="confirmCompany"></span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Informasi Tambahan</h5>
+                                <p class="mb-1"><strong>Pengalaman:</strong> <span id="confirmExperience"></span></p>
+                                <p class="mb-1"><strong>Sumber Informasi:</strong> <span id="confirmHearAbout"></span></p>
+                                <p class="mb-0"><strong>Pesan:</strong> <span id="confirmMessage"></span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">
+                                Saya setuju dengan syarat dan ketentuan yang berlaku *
+                            </label>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-secondary" onclick="prevStep()">
+                                <i class="bi bi-arrow-left"></i> Kembali
+                            </button>
+                            <div>
+                                <button type="button" class="btn btn-whatsapp" onclick="sendToWhatsApp()">
+                                    <i class="bi bi-whatsapp"></i> Kirim via WhatsApp
+                                </button>
+                                <button type="submit" class="btn btn-submit">
+                                    <i class="bi bi-send"></i> Kirim Pendaftaran
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <i class="bi bi-check-circle-fill success-icon"></i>
+                <h3>Pendaftaran Berhasil!</h3>
+                <p class="text-muted">Terima kasih telah mendaftar. Kami akan menghubungi Anda segera untuk konfirmasi.</p>
+                <a href="index.html" class="btn btn-primary mt-3">
+                    <i class="bi bi-house"></i> Kembali ke Beranda
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Get event name from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventName = urlParams.get('event');
+        
+        // Set event name in the form
+        if (eventName) {
+            document.getElementById('selectedEvent').textContent = decodeURIComponent(eventName);
+        } else {
+            document.getElementById('selectedEvent').textContent = 'Event Tidak Diketahui';
+        }
+        
+        // Current step
+        let currentStep = 1;
+        const totalSteps = 3;
+        
+        // Function to show a specific step
+        function showStep(step) {
+            // Hide all sections
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show current section
+            document.getElementById(`section${step}`).classList.add('active');
+            
+            // Update step indicators
+            document.querySelectorAll('.step').forEach((stepEl, index) => {
+                if (index < step) {
+                    stepEl.classList.add('completed');
+                    stepEl.classList.remove('active');
+                } else if (index === step - 1) {
+                    stepEl.classList.add('active');
+                    stepEl.classList.remove('completed');
+                } else {
+                    stepEl.classList.remove('active', 'completed');
+                }
+            });
+            
+            // Update current step
+            currentStep = step;
+        }
+        
+        // Function to go to next step
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < totalSteps) {
+                    if (currentStep === 2) {
+                        updateConfirmationData();
+                    }
+                    showStep(currentStep + 1);
+                }
+            }
+        }
+        
+        // Function to go to previous step
+        function prevStep() {
+            if (currentStep > 1) {
+                showStep(currentStep - 1);
+            }
+        }
+        
+        // Function to validate current step
+        function validateCurrentStep() {
+            if (currentStep === 1) {
+                const fullName = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                
+                if (!fullName) {
+                    alert('Nama lengkap harus diisi');
+                    return false;
+                }
+                
+                if (!email) {
+                    alert('Email harus diisi');
+                    return false;
+                }
+                
+                if (!phone) {
+                    alert('Nomor telepon harus diisi');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            return true;
+        }
+        
+        // Function to update confirmation data
+        function updateConfirmationData() {
+            // Get form values
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const company = document.getElementById('company').value || 'Tidak diisi';
+            const experience = document.getElementById('experience').value || 'Tidak diisi';
+            const hearAbout = document.getElementById('hearAbout').value || 'Tidak diisi';
+            const message = document.getElementById('message').value || 'Tidak ada';
+            
+            // Map experience value to text
+            const experienceMap = {
+                'pemula': 'Pemula',
+                'menengah': 'Menengah',
+                'ahli': 'Ahli'
+            };
+            
+            // Map hearAbout value to text
+            const hearAboutMap = {
+                'media-sosial': 'Media Sosial',
+                'teman': 'Teman/Keluarga',
+                'website': 'Website',
+                'email': 'Email',
+                'lainnya': 'Lainnya'
+            };
+            
+            // Update confirmation data
+            document.getElementById('confirmName').textContent = fullName;
+            document.getElementById('confirmEmail').textContent = email;
+            document.getElementById('confirmPhone').textContent = phone;
+            document.getElementById('confirmCompany').textContent = company;
+            document.getElementById('confirmExperience').textContent = experienceMap[experience] || experience;
+            document.getElementById('confirmHearAbout').textContent = hearAboutMap[hearAbout] || hearAbout;
+            document.getElementById('confirmMessage').textContent = message;
+        }
+        
+        // Function to send data to WhatsApp
+        function sendToWhatsApp() {
+            if (!document.getElementById('agreeTerms').checked) {
+                alert('Anda harus menyetujui syarat dan ketentuan');
+                return;
+            }
+            
+            // Get form values
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const company = document.getElementById('company').value || 'Tidak diisi';
+            const experience = document.getElementById('experience').value || 'Tidak diisi';
+            const hearAbout = document.getElementById('hearAbout').value || 'Tidak diisi';
+            const message = document.getElementById('message').value || 'Tidak ada';
+            const newsletter = document.getElementById('newsletter').checked ? 'Ya' : 'Tidak';
+            
+            // Map experience value to text
+            const experienceMap = {
+                'pemula': 'Pemula',
+                'menengah': 'Menengah',
+                'ahli': 'Ahli'
+            };
+            
+            // Map hearAbout value to text
+            const hearAboutMap = {
+                'media-sosial': 'Media Sosial',
+                'teman': 'Teman/Keluarga',
+                'website': 'Website',
+                'email': 'Email',
+                'lainnya': 'Lainnya'
+            };
+            
+            // Create WhatsApp message
+            const whatsappMessage = `*PENDAFTARAN EVENT MEWAH PROJECT*%0A%0A` +
+                `*Event:* ${eventName}%0A` +
+                `*Tanggal:* ${new Date().toLocaleDateString('id-ID')}%0A%0A` +
+                `*DATA PRIBADI*%0A` +
+                `Nama: ${fullName}%0A` +
+                `Email: ${email}%0A` +
+                `Telepon: ${phone}%0A` +
+                `Perusahaan: ${company}%0A%0A` +
+                `*INFORMASI TAMBAHAN*%0A` +
+                `Pengalaman: ${experienceMap[experience] || experience}%0A` +
+                `Sumber Informasi: ${hearAboutMap[hearAbout] || hearAbout}%0A` +
+                `Pesan: ${message}%0A` +
+                `Newsletter: ${newsletter}%0A%0A` +
+                `Terima kasih telah mendaftar!`;
+            
+            // WhatsApp admin number
+            const adminNumber = '6283116545674';
+            
+            // Create WhatsApp URL
+            const whatsappURL = `https://wa.me/${adminNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+            
+            // Open WhatsApp
+            window.open(whatsappURL, '_blank');
+            
+            // Show success message
+            showSuccessMessage();
+        }
+        
+        // Function to show success message
+        function showSuccessMessage() {
+            document.getElementById('registrationFormContainer').style.display = 'none';
+            document.getElementById('successMessage').classList.add('show');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!document.getElementById('agreeTerms').checked) {
+                alert('Anda harus menyetujui syarat dan ketentuan');
+                return;
+            }
+            
+            // Show success message
+            showSuccessMessage();
+            
+            // Here you would normally send the form data to a server
+            console.log('Form submitted with data:', {
+                event: eventName,
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                company: document.getElementById('company').value,
+                address: document.getElementById('address').value,
+                experience: document.getElementById('experience').value,
+                hearAbout: document.getElementById('hearAbout').value,
+                message: document.getElementById('message').value,
+                newsletter: document.getElementById('newsletter').checked
+            });
+        });
+    </script>
+</body>
+</html>
